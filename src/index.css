@@ -1,12 +1,100 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@keyframes shine {
-  0% {
-    transform: translateX(-120%);
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Custom Scrollbar for Chrome/Safari */
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+    &::-webkit-scrollbar-track {
+      @apply bg-slate-950;
+    }
+    &::-webkit-scrollbar-thumb {
+      @apply bg-slate-800 rounded-full border-2 border-slate-950 hover:bg-amber-500 transition-colors;
+    }
   }
-  100% {
-    transform: translateX(120%);
+
+  body {
+    @apply bg-slate-950 text-slate-300 antialiased selection:bg-amber-500/30 selection:text-amber-500;
+    font-family: 'Plus Jakarta Sans', sans-serif;
   }
+
+  /* Headings with Space Grotesk for a more "Tech/Elite" look */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', sans-serif;
+    @apply text-white;
+  }
+}
+
+@layer components {
+  /* --- Typography Utilities --- */
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-amber-400 via-amber-500 to-orange-600;
+  }
+
+  .heading-xl {
+    @apply text-5xl md:text-7xl font-black tracking-tighter leading-[0.9];
+  }
+
+  /* --- Advanced Effects --- */
+  
+  /* Magnetic Glow Effect */
+  .glass-card {
+    @apply bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl transition-all duration-500 hover:border-amber-500/50 hover:bg-white/[0.08];
+  }
+
+  /* Floating Animation */
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  /* Text Reveal Mask */
+  .mask-vignette {
+    mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+  }
+}
+
+/* --- Custom Keyframes --- */
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 0.1; transform: scale(1); }
+  50% { opacity: 0.3; transform: scale(1.1); }
+}
+
+/* Custom Shine Utility with higher fidelity */
+.shine-gold {
+  position: relative;
+  overflow: hidden;
+}
+
+.shine-gold::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -150%;
+  width: 100%;
+  height: 200%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(245, 158, 11, 0.2),
+    transparent
+  );
+  transform: rotate(25deg);
+  animation: shine-move 3s infinite;
+}
+
+@keyframes shine-move {
+  0% { left: -150%; }
+  100% { left: 150%; }
 }

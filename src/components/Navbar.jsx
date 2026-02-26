@@ -1,293 +1,217 @@
-
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
 import { VscClose } from "react-icons/vsc";
-import { BsWhatsapp, BsGearFill } from "react-icons/bs";
+import { BsWhatsapp, BsArrowRight } from "react-icons/bs";
 
 const Navbar = () => {
   const [menu, setMenu] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [scrollProgress, setScrollProgress] = useState(0);
   const [visible, setVisible] = useState(true);
   const [lastScroll, setLastScroll] = useState(0);
   const location = useLocation();
 
-  /* ---------------- SCROLL LOCK (Mobile Menu) ---------------- */
+  // Framer Motion Scroll Progress for the thin top line
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
+
+  /* ---------------- LOGIC: HIDE ON SCROLL DOWN ---------------- */
   useEffect(() => {
-    if (menu) {
-      document.body.style.overflow = "hidden";
-      document.body.style.height = "100vh";
-    } else {
-      document.body.style.overflow = "auto";
-      document.body.style.height = "auto";
-    }
-
-    return () => {
-      document.body.style.overflow = "auto";
-      document.body.style.height = "auto";
-    };
-  }, [menu]);
-
-  /* ---------------- CLOSE MENU ON ROUTE CHANGE ---------------- */
-  useEffect(() => {
-    setMenu(false);
-  }, [location]);
-
-  /* ---------------- ESC KEY CLOSE ---------------- */
-  useEffect(() => {
-    const escClose = (e) => {
-      if (e.key === "Escape") setMenu(false);
-    };
-    window.addEventListener("keydown", escClose);
-    return () => window.removeEventListener("keydown", escClose);
-  }, []);
-
-  /* ---------------- SMOOTH SCROLL HANDLER ---------------- */
-  useEffect(() => {
-    let ticking = false;
-
     const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          const totalScroll =
-            document.body.scrollHeight - window.innerHeight;
+      const currentScroll = window.scrollY;
+      setScrolled(currentScroll > 50);
 
-          const progress = (window.scrollY / totalScroll) * 100;
-
-          setScrollProgress(progress);
-          setScrolled(window.scrollY > 40);
-
-          /* Hide on scroll down / show on up */
-          if (window.scrollY > lastScroll && window.scrollY > 120) {
-            setVisible(false);
-          } else {
-            setVisible(true);
-          }
-          setLastScroll(window.scrollY);
-
-          ticking = false;
-        });
-
-        ticking = true;
+      if (currentScroll > lastScroll && currentScroll > 150) {
+        setVisible(false); // Scrolling down
+      } else {
+        setVisible(true); // Scrolling up
       }
+      setLastScroll(currentScroll);
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScroll]);
+
+  /* ---------------- LOGIC: MOBILE MENU LOCK ---------------- */
+  useEffect(() => {
+    document.body.style.overflow = menu ? "hidden" : "auto";
+  }, [menu]);
+
+  useEffect(() => setMenu(false), [location]);
 
   const navLinks = [
     { path: "/", label: "Home" },
     { path: "/services", label: "Expertise" },
-    { path: "/about", label: "Legacy" },
+    { path: "/about", label: "About" },
     { path: "/contactus", label: "Contact" },
   ];
 
-  /* ---------------- LOGO ---------------- */
-  const Logo = () => (
-    <div className="flex items-center gap-3 group cursor-pointer select-none">
-      <div className="relative w-11 h-11 sm:w-12 sm:h-12 flex items-center justify-center">
-        {/* Rotating ring */}
-        <motion.svg
-          animate={{ rotate: 360 }}
-          transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-          className="absolute w-full h-full text-amber-500/30"
-          viewBox="0 0 100 100"
-        >
-          <circle
-            cx="50"
-            cy="50"
-            r="48"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeDasharray="18 10"
-          />
-        </motion.svg>
-
-        {/* Core */}
-        <motion.div
-          whileHover={{ scale: 1.12, rotate: 90 }}
-          transition={{ type: "spring", stiffness: 200 }}
-          className="relative z-10 w-8 h-8 sm:w-9 sm:h-9 bg-gradient-to-br from-slate-800 to-slate-950 border border-amber-500/50 rounded-lg flex items-center justify-center shadow-[0_0_20px_rgba(245,158,11,0.4)] group-hover:shadow-[0_0_40px_rgba(245,158,11,0.8)] transition-all duration-500"
-        >
-          <span className="text-amber-500 font-black text-base tracking-tight">
-            BT
-          </span>
-          <motion.div
-            animate={{ opacity: [0.3, 1, 0.3] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="absolute inset-0 bg-amber-500/10 rounded-lg"
-          />
-        </motion.div>
-      </div>
-
-      <div className="hidden sm:flex flex-col">
-        <h1 className="text-lg md:text-xl font-black tracking-[0.18em] text-white leading-none">
-          BRAINY<span className="text-amber-500">TROVES</span>
-        </h1>
-        <span className="text-[9px] font-bold text-slate-500 tracking-[0.35em] uppercase">
-          Consultancy & Services
-        </span>
-      </div>
-    </div>
-  );
-
   return (
-    <motion.header
-      initial={{ y: -120 }}
-      animate={{ y: visible ? 0 : -120 }}
-      transition={{ duration: 0.35 }}
-      className={`fixed w-full top-0 left-0 z-[100] transition-all duration-500 ${
-        scrolled
-          ? "bg-slate-950/70 backdrop-blur-xl border-b border-white/5 py-3"
-          : "bg-transparent py-6"
-      }`}
-    >
-      {/* Scroll Progress */}
-      <div className="absolute bottom-0 left-0 w-full h-[2px] bg-slate-800/40">
-        <motion.div
-          className="h-full bg-gradient-to-r from-amber-400 via-amber-500 to-orange-500 shadow-[0_0_12px_#f59e0b]"
-          style={{ width: `${scrollProgress}%` }}
+    <>
+      <motion.header
+        initial={{ y: 0 }}
+        animate={{ y: visible ? 0 : -110 }}
+        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+        style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000 }}
+        className={`w-full transition-all duration-500 ${
+          scrolled 
+            ? "py-3 px-4 md:px-10" 
+            : "py-6 px-6 md:px-12"
+        }`}
+      >
+        {/* Progress Bar */}
+        <motion.div 
+          className="absolute top-0 left-0 right-0 h-[3px] bg-amber-500 origin-left z-50 shadow-[0_0_15px_#f59e0b]"
+          style={{ scaleX }}
         />
-      </div>
 
-      <div className="max-w-7xl mx-auto px-5 flex items-center justify-between">
-        <Link to="/">
-          <Logo />
-        </Link>
+        <div className={`max-w-7xl mx-auto transition-all duration-500 rounded-[2rem] ${
+          scrolled 
+            ? "bg-slate-950/80 backdrop-blur-2xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] px-6 py-2" 
+            : "bg-transparent px-0"
+        } flex items-center justify-between`}>
+          
+          {/* LOGO SECTION */}
+          <Link to="/" className="flex items-center gap-3 group">
+            <div className="relative w-10 h-10 flex items-center justify-center">
+              <motion.div 
+                animate={{ rotate: 360 }}
+                transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+                className="absolute inset-0 border-2 border-dashed border-amber-500/30 rounded-xl"
+              />
+              <div className="relative z-10 w-8 h-8 bg-amber-500 rounded-lg flex items-center justify-center shadow-lg shadow-amber-500/20 group-hover:rotate-90 transition-transform duration-500">
+                <span className="text-slate-950 font-black text-xs">BT</span>
+              </div>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-white font-black tracking-tighter text-lg leading-none group-hover:text-amber-500 transition-colors">
+                BRAINY<span className="text-amber-500 group-hover:text-white transition-colors">TROVES</span>
+              </span>
+              <span className="text-[8px] font-bold text-slate-500 tracking-[0.3em] uppercase">Consultancy</span>
+            </div>
+          </Link>
 
-        {/* Desktop Nav */}
-        <nav className="hidden lg:flex items-center gap-10">
-          <ul className="flex items-center gap-1">
+          {/* DESKTOP NAV */}
+          <nav className="hidden lg:flex items-center gap-2">
             {navLinks.map((link) => (
-              <li key={link.path} className="relative">
-                <Link
-                  to={link.path}
-                  className={`group px-5 py-2 text-[11px] font-black uppercase tracking-[0.2em] transition-all duration-500 relative z-10 ${
-                    location.pathname === link.path
-                      ? "text-slate-950"
-                      : "text-slate-400 hover:text-white"
-                  }`}
-                >
+              <Link
+                key={link.path}
+                to={link.path}
+                className="relative px-6 py-2 group overflow-hidden"
+              >
+                <span className={`relative z-10 text-[10px] font-black uppercase tracking-widest transition-colors duration-300 ${
+                  location.pathname === link.path ? "text-amber-500" : "text-slate-300 group-hover:text-white"
+                }`}>
                   {link.label}
+                </span>
+                
+                {/* Hover Background Pill */}
+                <motion.div 
+                  className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 rounded-xl transition-opacity"
+                  layoutId={scrolled ? "hoverPill" : ""}
+                />
 
-                  {/* underline animation */}
-                  <span className="absolute left-1/2 -bottom-1 h-[2px] w-0 bg-amber-500 transition-all duration-500 group-hover:w-full group-hover:left-0" />
-                </Link>
-
+                {/* Active Indicator */}
                 {location.pathname === link.path && (
-                  <motion.div
-                    layoutId="nav-pill"
-                    className="absolute inset-0 bg-amber-500 rounded-lg z-0 shadow-[0_0_25px_rgba(245,158,11,0.45)]"
-                    transition={{ type: "spring", bounce: 0.3, duration: 0.6 }}
+                  <motion.div 
+                    layoutId="activeTab"
+                    className="absolute bottom-1 left-6 right-6 h-[2px] bg-amber-500"
                   />
                 )}
-              </li>
+              </Link>
             ))}
-          </ul>
 
-          {/* WhatsApp */}
-          <motion.a
-            whileHover={{ scale: 1.06, y: -2 }}
-            whileTap={{ scale: 0.95 }}
-            href="https://wa.me/919620996689"
-            target="_blank"
-            className="group relative px-6 py-3 bg-slate-900 border border-slate-700 rounded-xl flex items-center gap-3 overflow-hidden"
+            <div className="h-6 w-[1px] bg-slate-800 mx-4" />
+
+            {/* WhatsApp CTA */}
+            <motion.a
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              href="https://wa.me/919620996689"
+              target="_blank"
+              className="bg-amber-500 text-slate-950 px-6 py-2.5 rounded-full text-[10px] font-black tracking-widest flex items-center gap-2 shadow-lg shadow-amber-500/20 hover:bg-white transition-all"
+            >
+              <BsWhatsapp size={14} /> TALK TO US
+            </motion.a>
+          </nav>
+
+          {/* MOBILE TOGGLE */}
+          <button 
+            onClick={() => setMenu(true)}
+            className="lg:hidden p-3 text-white bg-white/5 border border-white/10 rounded-2xl hover:bg-amber-500 hover:text-slate-950 transition-all"
           >
-            <div className="absolute inset-0 bg-amber-500 translate-y-[101%] group-hover:translate-y-0 transition-transform duration-500" />
-            <BsWhatsapp className="relative z-10 text-amber-500 group-hover:text-slate-950 transition-colors" />
-            <span className="relative z-10 text-[10px] font-black tracking-widest text-white group-hover:text-slate-950 transition-colors">
-              DIRECT LINE
-            </span>
-          </motion.a>
-        </nav>
+            <HiOutlineMenuAlt3 size={24} />
+          </button>
+        </div>
+      </motion.header>
 
-        {/* Mobile Toggle */}
-        <motion.button
-          whileTap={{ scale: 0.9 }}
-          onClick={() => setMenu(!menu)}
-          className="lg:hidden w-11 h-11 flex items-center justify-center text-amber-500 bg-slate-900 border border-slate-800 rounded-xl"
-        >
-          {menu ? <VscClose size={24} /> : <HiOutlineMenuAlt3 size={24} />}
-        </motion.button>
-      </div>
-
-      {/* Mobile Menu */}
+      {/* MOBILE MENU OVERLAY */}
       <AnimatePresence>
         {menu && (
-          <>
-            <motion.div
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              transition={{ type: "spring", damping: 25, stiffness: 220 }}
-              className="fixed inset-y-0 right-0 w-full sm:w-[380px] z-[110] bg-slate-950 border-l border-slate-800 p-8 flex flex-col"
-            >
-              <div className="flex justify-between items-center mb-16">
-                <span className="text-amber-500 font-black text-xs tracking-widest">
-                  NAVIGATION
-                </span>
-                <button onClick={() => setMenu(false)}>
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[2000] bg-slate-950/95 backdrop-blur-2xl"
+          >
+            <div className="flex flex-col h-full p-8">
+              <div className="flex justify-between items-center">
+                <span className="text-amber-500 font-black text-xs tracking-widest">MENU</span>
+                <button 
+                  onClick={() => setMenu(false)}
+                  className="p-4 bg-white/5 rounded-full text-white"
+                >
                   <VscClose size={30} />
                 </button>
               </div>
 
-              <div className="flex flex-col gap-8">
+              <nav className="mt-20 flex flex-col gap-6">
                 {navLinks.map((link, i) => (
                   <motion.div
                     key={link.path}
-                    initial={{ opacity: 0, x: 30 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.08 }}
+                    initial={{ x: -50, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{ delay: i * 0.1 }}
                   >
                     <Link
                       to={link.path}
-                      className={`text-4xl font-black tracking-tight flex items-center gap-4 ${
-                        location.pathname === link.path
-                          ? "text-amber-500"
-                          : "text-slate-700 hover:text-white"
-                      }`}
+                      className={`text-5xl font-black tracking-tighter ${
+                        location.pathname === link.path ? "text-amber-500" : "text-white/20 hover:text-white"
+                      } transition-colors flex items-center gap-4 group`}
                     >
-                      <span className="text-sm opacity-30">0{i + 1}</span>
+                      <span className="text-xs font-mono opacity-50">0{i+1}</span>
                       {link.label}
+                      <BsArrowRight className="opacity-0 group-hover:opacity-100 transition-opacity text-amber-500" />
                     </Link>
                   </motion.div>
                 ))}
-              </div>
+              </nav>
 
-              <div className="mt-auto pt-10 border-t border-slate-800 space-y-5">
-                <a
-                  href="mailto:info@brainytroves.com"
-                  className="text-white font-semibold hover:text-amber-500 transition"
-                >
-                  info@brainytroves.com
-                </a>
-
+              <div className="mt-auto border-t border-white/10 pt-8 flex justify-between items-end">
+                <div>
+                  <p className="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-2">Global Inquiry</p>
+                  <a href="mailto:info@brainytroves.com" className="text-xl font-bold text-white hover:text-amber-500 transition-colors">
+                    info@brainytroves.com
+                  </a>
+                </div>
                 <div className="flex gap-4">
-                  <div className="w-10 h-10 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center">
-                    <BsGearFill className="text-slate-500 animate-spin" />
-                  </div>
+                   <div className="w-12 h-12 rounded-2xl bg-slate-900 flex items-center justify-center text-amber-500">
+                      <BsWhatsapp size={20} />
+                   </div>
                 </div>
               </div>
-            </motion.div>
-
-            {/* backdrop */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setMenu(false)}
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[105] lg:hidden"
-            />
-          </>
+            </div>
+          </motion.div>
         )}
       </AnimatePresence>
-    </motion.header>
+    </>
   );
 };
 
 export default Navbar;
-

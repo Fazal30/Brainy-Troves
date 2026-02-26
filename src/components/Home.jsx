@@ -65,7 +65,6 @@ const Home = () => {
   className="relative min-h-[100svh] flex items-center justify-center overflow-hidden px-4 sm:px-6"
 >
 
-  {/* ========= BACKGROUND GLOW ========= */}
   <div className="absolute inset-0 z-0">
     {/* amber glow */}
     <div className="absolute top-[-15%] left-[-10%] w-[60vw] h-[60vw] bg-amber-500/10 rounded-full blur-[150px] animate-pulse" />
@@ -85,7 +84,6 @@ const Home = () => {
     className="container mx-auto relative z-10 text-center"
   >
 
-    {/* ========= LOGO HEADING ========= */}
     <motion.h1
       initial={{ y: 60, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
@@ -103,7 +101,7 @@ const Home = () => {
       </span>
     </motion.h1>
 
-    {/* ========= SUBTITLE ========= */}
+    {/* - SUBTITLE - */}
     <motion.p
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
@@ -122,7 +120,7 @@ const Home = () => {
       cost and accelerate growth.
     </motion.p>
 
-    {/* ========= FLOATING SERVICE PILLS ========= */}
+    {/* - FLOATING SERVICE PILLS - */}
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -149,7 +147,7 @@ const Home = () => {
       ))}
     </motion.div>
 
-    {/* ========= CTA BUTTONS ========= */}
+    {/* - CTA BUTTONS - */}
     <motion.div
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
@@ -179,7 +177,7 @@ const Home = () => {
       </a>
     </motion.div>
 
-    {/* ========= STATS (GLASS CARDS) ========= */}
+    {/* - STATS (GLASS CARDS) - */}
     <motion.div
       initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
@@ -205,7 +203,7 @@ const Home = () => {
       ))}
     </motion.div>
 
-    {/* ========= SCROLL INDICATOR ========= */}
+    {/* SCROLL INDICATOR - */}
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -219,7 +217,7 @@ const Home = () => {
     </motion.div>
 
   </motion.div>
-</section>
+      </section>
 
       {/* --- SECTOR SELECTOR: PREMIUM INTERACTIVE EXPERIENCE --- */}
       <section className="relative py-36 overflow-hidden bg-slate-950">
@@ -471,22 +469,7 @@ const Home = () => {
         </div>
       ))}
     </motion.div>
-  </div>
-
-
-  {/* Center CTA */}
-  <div className="text-center mt-20">
-    <motion.button
-      whileHover={{ scale: 1.08 }}
-      whileTap={{ scale: 0.95 }}
-      className="relative px-10 py-4 rounded-full font-bold bg-amber-500 text-slate-950 overflow-hidden group"
-    >
-      <span className="relative z-10">View All Industries</span>
-
-      <span className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/40 to-white/0 translate-x-[-120%] group-hover:translate-x-[120%] transition-transform duration-700"/>
-    </motion.button>
-  </div>
-
+  </div> 
     </section>
 
       {/* --- CORE STRENGTHS : PREMIUM ANIMATED BENTO GRID --- */}
@@ -637,9 +620,8 @@ const Home = () => {
   </div>
     </section>
 
-      {/* --- CLIENTS --- */}
       {/* --- CLIENTS : TRUST & PARTNERS --- */}
-<section className="relative py-32 bg-slate-950 overflow-hidden">
+    <section className="relative py-32 bg-slate-950 overflow-hidden">
 
   {/* Background Glow */}
   <div className="absolute inset-0 -z-10">
@@ -701,7 +683,7 @@ const Home = () => {
 
   </div>
 
-</section>
+    </section>
 
       {/* --- FINAL CTA : PREMIUM CONVERSION SECTION --- */}
      <section className="relative py-44 overflow-hidden bg-slate-950">
