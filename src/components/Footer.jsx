@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaLinkedinIn, FaTwitter, FaInstagram, FaWhatsapp, FaArrowUp, FaGlobeAmericas } from "react-icons/fa";
 import { MdEmail, MdPhone, MdLocationOn, MdArrowForward, MdRocketLaunch, MdShield } from "react-icons/md";
+import logo from "../assets/logo.png"
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -145,7 +146,7 @@ const Footer = () => {
                   className="relative z-10 w-11 h-11 md:w-12 md:h-12 bg-gradient-to-br from-slate-800 to-slate-950 rounded-xl flex items-center justify-center shadow-[0_0_30px_rgba(245,158,11,0.3)] group-hover:shadow-amber-500/50 transition-all duration-500 border border-white/10 overflow-hidden"
                 >
                   <img 
-                    src="src/assets/logo.png" 
+                    src={logo} 
                     alt="Brainy Troves Logo" 
                     className="w-full h-full object-cover p-1.5 transition-transform duration-500 group-hover:scale-110" 
                   />
