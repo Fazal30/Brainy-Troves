@@ -255,7 +255,7 @@ const card = {
               <div className="space-y-4">
                 <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-amber-500/30 bg-amber-500/5">
                   <span className="w-2 h-2 rounded-full bg-amber-500 animate-ping" />
-                  <span className="text-amber-500 text-xs font-black tracking-[0.3em] uppercase">Founder & Chief Strategist</span>
+                  <span className="text-amber-500 text-xs font-black tracking-[0.3em] uppercase">CEO</span>
                 </div>
                 <h2 className="text-6xl md:text-8xl font-black text-white tracking-tighter leading-[0.85]">
                   SYED FAZAL <br /> 
@@ -264,7 +264,7 @@ const card = {
               </div>
               
               <p className="text-xl text-slate-400 leading-relaxed font-light max-w-2xl">
-                Syed Fazal leads with a vision that blends AI-driven precision with human-centric empathy, ensuring every client interaction is defined by radical transparency and operational mastery.
+                SYED FAZAL UR RAHMAN leads with a vision that blends AI-driven precision with human-centric empathy, ensuring every client interaction is defined by radical transparency and operational mastery.
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

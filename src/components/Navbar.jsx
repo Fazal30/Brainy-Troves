@@ -77,25 +77,52 @@ const Navbar = () => {
             : "bg-transparent px-0"
         } flex items-center justify-between`}>
           
-          {/* LOGO SECTION */}
-          <Link to="/" className="flex items-center gap-3 group">
-            <div className="relative w-10 h-10 flex items-center justify-center">
-              <motion.div 
-                animate={{ rotate: 360 }}
-                transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-                className="absolute inset-0 border-2 border-dashed border-amber-500/30 rounded-xl"
-              />
-              <div className="relative z-10 w-8 h-8 bg-amber-500 rounded-lg flex items-center justify-center shadow-lg shadow-amber-500/20 group-hover:rotate-90 transition-transform duration-500">
-                <span className="text-slate-950 font-black text-xs">BT</span>
-              </div>
-            </div>
-            <div className="flex flex-col">
-              <span className="text-white font-black tracking-tighter text-lg leading-none group-hover:text-amber-500 transition-colors">
-                BRAINY<span className="text-amber-500 group-hover:text-white transition-colors">TROVES</span>
-              </span>
-              <span className="text-[8px] font-bold text-slate-500 tracking-[0.3em] uppercase">Consultancy</span>
-            </div>
-          </Link>
+          <Link to="/" className="flex items-center gap-4 group select-none">
+  <div className="relative w-14 h-14 md:w-16 md:h-16 flex items-center justify-center">
+    
+    {/* Large Rotating Outer Ring */}
+    <motion.div 
+      animate={{ rotate: 360 }}
+      transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+      className="absolute inset-0 border-[3px] border-dashed border-amber-500/20 rounded-2xl"
+    />
+
+    {/* Secondary Pulse Ring */}
+    <motion.div 
+      animate={{ scale: [1, 1.1, 1], opacity: [0.2, 0.5, 0.2] }}
+      transition={{ duration: 4, repeat: Infinity }}
+      className="absolute inset-2 border border-amber-500/40 rounded-xl"
+    />
+
+    {/* The Core Logo Container */}
+    <motion.div 
+      whileHover={{ scale: 1.1, rotate: 5 }}
+      className="relative z-10 w-11 h-11 md:w-12 md:h-12 bg-gradient-to-br from-slate-800 to-slate-950 rounded-xl flex items-center justify-center shadow-[0_0_30px_rgba(245,158,11,0.3)] group-hover:shadow-amber-500/50 transition-all duration-500 border border-white/10 overflow-hidden"
+    >
+      <img 
+        src="src/assets/logo.png" 
+        alt="Brainy Troves Logo" 
+        className="w-full h-full object-cover p-1.5 transition-transform duration-500 group-hover:scale-110" 
+      />
+      
+      {/* Glint effect on hover */}
+      <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+    </motion.div>
+  </div>
+
+  {/* Typography Section */}
+  <div className="flex flex-col justify-center">
+    <h1 className="text-2xl md:text-3xl font-black tracking-tighter text-white leading-none">
+      BRAINY<span className="text-amber-500 group-hover:text-white transition-colors duration-500">TROVES</span>
+    </h1>
+    <div className="flex items-center gap-2 mt-1">
+      <span className="h-[1px] w-4 bg-amber-500/50" />
+      <span className="text-[9px] md:text-[10px] font-bold text-slate-500 tracking-[0.4em] uppercase">
+        Consultancy Services
+      </span>
+    </div>
+  </div>
+</Link>
 
           {/* DESKTOP NAV */}
           <nav className="hidden lg:flex items-center gap-2">
