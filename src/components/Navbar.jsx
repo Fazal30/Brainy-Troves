@@ -4,6 +4,7 @@ import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
 import { VscClose } from "react-icons/vsc";
 import { BsWhatsapp, BsArrowRight } from "react-icons/bs";
+import logo from "../assets/logo.png"
 
 const Navbar = () => {
   const [menu, setMenu] = useState(false);
@@ -100,7 +101,7 @@ const Navbar = () => {
       className="relative z-10 w-11 h-11 md:w-12 md:h-12 bg-gradient-to-br from-slate-800 to-slate-950 rounded-xl flex items-center justify-center shadow-[0_0_30px_rgba(245,158,11,0.3)] group-hover:shadow-amber-500/50 transition-all duration-500 border border-white/10 overflow-hidden"
     >
       <img 
-        src="src/assets/logo.png" 
+        src={logo} 
         alt="Brainy Troves Logo" 
         className="w-full h-full object-cover p-1.5 transition-transform duration-500 group-hover:scale-110" 
       />
@@ -118,7 +119,7 @@ const Navbar = () => {
     <div className="flex items-center gap-2 mt-1">
       <span className="h-[1px] w-4 bg-amber-500/50" />
       <span className="text-[9px] md:text-[10px] font-bold text-slate-500 tracking-[0.4em] uppercase">
-        Consultancy Services
+        Consultancy & Services
       </span>
     </div>
   </div>

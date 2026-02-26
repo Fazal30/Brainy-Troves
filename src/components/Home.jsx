@@ -58,7 +58,7 @@ const Home = () => {
   ];
 
   return (
-    <div className="bg-slate-950 text-white selection:bg-amber-500/30 overflow-x-hidden font-sans">
+    <div className="bg-slate-950 text-white selection:bg-amber-500/30 overflow-x-hidden font-sans mt-24 md:mt-20">
       
       <section
   ref={targetRef}

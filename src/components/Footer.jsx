@@ -163,7 +163,7 @@ const Footer = () => {
                 <div className="flex items-center gap-2 mt-1">
                   <span className="h-[1px] w-4 bg-amber-500/50" />
                   <span className="text-[9px] md:text-[10px] font-bold text-slate-500 tracking-[0.4em] uppercase">
-                    Consultancy Services
+                    Consultancy & Services
                   </span>
                 </div>
               </div>
